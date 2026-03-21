@@ -5,6 +5,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import QRCode from "qrcode";
 import { Resend } from "resend";
+import { generateTicketImage } from "@/app/lib/generateTicket";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -70,39 +71,56 @@ export async function POST(request: Request) {
       createdAt: new Date(),
     });
 
+    const finalTicketBuffer = await generateTicketImage({
+      name,
+      ticketType,
+      ticketId,
+    });
+
     await resend.emails.send({
       from: "ESUCOM Dinner <tickets@esucomdinner.org>",
       to: email,
-      subject: "Your ESUCOM Dinner Ticket 🎟️",
+      subject: "Your ESUMSA ALL-STAR Dinner & AWARD NIGHT TICKET 🎟️",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #111;">
-          <h2 style="margin-bottom: 8px;">ESUCOM Dinner Ticket</h2>
+          <h2 style="margin-bottom: 8px;">ESUMSA ALL-STAR Dinner Ticket</h2>
           <p>Hello <strong>${name}</strong>,</p>
 
-          <p>Your ticket for the ESUCOM Dinner has been generated successfully.</p>
+          <p>Your ticket for the ESUMSA ALL STAR DINNER & AWARD NIGHT has been generated successfully.</p>
 
           <p>
             <strong>Ticket Type:</strong> ${ticketType}<br />
             <strong>Ticket ID:</strong> ${ticketId}
           </p>
 
-          <p>Please present this QR code at the entrance:</p>
+          <p>Your ticket is attached to this email.</p>
+
+          <p style="margin: 20px 0;">
+            You can also present this QR code at the entrance:
+          </p>
 
           <div style="margin: 20px 0;">
             <img src="${qrCodeImage}" alt="QR Code" width="220" height="220" />
           </div>
 
           <p style="font-size: 14px; color: #555;">
-            Please keep this email safe and show the QR code at the event venue for entry.
+            Please keep this email safe and show your attached ticket or QR code at the venue.
           </p>
 
           <hr style="margin: 24px 0;" />
 
           <p style="font-size: 12px; color: #777;">
-            This email was sent automatically by the ESUCOM Dinner Ticket System.
+            This email was sent automatically by the ESUCOM Dinner Ticket System. <br />
+            Powered by ESUMSA FINANCIAL SECRETARY 2026: AROH DOZZY
           </p>
         </div>
       `,
+      attachments: [
+        {
+          filename: `${ticketId}.png`,
+          content: finalTicketBuffer.toString("base64"),
+        },
+      ],
     });
 
     return NextResponse.json({
