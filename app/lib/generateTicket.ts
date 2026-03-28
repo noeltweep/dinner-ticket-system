@@ -1,6 +1,6 @@
 import path from "path";
 import QRCode from "qrcode";
-import { createCanvas, loadImage } from "canvas";
+import { createCanvas, loadImage, registerFont } from "canvas";
 
 type TicketType = "Regular" | "VIP" | "Table for 10" | "All Star";
 
@@ -10,6 +10,23 @@ const TEMPLATE_MAP: Record<TicketType, string> = {
   "Table for 10": "table-for-10.jpg",
   "All Star": "all-star.jpg",
 };
+
+const regularFontPath = path.join(
+  process.cwd(),
+  "public",
+  "fonts",
+  "NotoSans-Regular.ttf"
+);
+
+const boldFontPath = path.join(
+  process.cwd(),
+  "public",
+  "fonts",
+  "NotoSans-Bold.ttf"
+);
+
+registerFont(regularFontPath, { family: "Noto Sans" });
+registerFont(boldFontPath, { family: "Noto Sans Bold" });
 
 export async function generateTicketImage({
   name,
@@ -40,7 +57,7 @@ export async function generateTicketImage({
   ctx.drawImage(template, 0, 0, template.width, template.height);
 
   // NAME
-  ctx.font = '44px Arial';
+  ctx.font = "44px 'Noto Sans'";
   ctx.fillStyle = "#ffffff";
   ctx.textBaseline = "middle";
 
@@ -60,11 +77,13 @@ export async function generateTicketImage({
   ctx.fillText(finalName, nameX, nameY);
 
   // TICKET ID
-  ctx.font = 'bold 24px Arial';
+  ctx.textBaseline = "alphabetic";
   ctx.fillStyle = "#111111";
+
+  ctx.font = "22px 'Noto Sans Bold'";
   ctx.fillText("Ticket ID:", 1090, 95);
 
-  ctx.font = '22px Arial';
+  ctx.font = "20px 'Noto Sans'";
   ctx.fillText(ticketId, 1090, 125);
 
   // QR CODE
