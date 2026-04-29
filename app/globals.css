@@ -24,3 +24,76 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+/* Scanner UI polish */
+.scanner-shell {
+  color: #111827;
+}
+
+.scanner-shell #reader {
+  border: none !important;
+}
+
+.scanner-shell video {
+  border-radius: 1rem;
+}
+
+.scanner-shell img {
+  border-radius: 1rem;
+}
+
+.scanner-shell button {
+  background: linear-gradient(to right, #dc2626, #ef4444) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 0.9rem !important;
+  padding: 0.75rem 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+}
+
+.scanner-shell button:hover {
+  filter: brightness(1.05);
+}
+
+.scanner-shell select,
+.scanner-shell input {
+  border: 1px solid #d1d5db !important;
+  border-radius: 0.8rem !important;
+  padding: 0.7rem 0.9rem !important;
+  color: #111827 !important;
+  background: white !important;
+}
+
+.scanner-shell a {
+  color: #b91c1c !important;
+}
+
+.scanner-shell span,
+.scanner-shell div,
+.scanner-shell label,
+.scanner-shell p {
+  color: #111827 !important;
+}
+
+.scanner-shell #reader__scan_region {
+  border: none !important;
+  background: #ffffff !important;
+  border-radius: 1rem !important;
+  padding: 0.5rem !important;
+}
+
+.scanner-shell #reader__dashboard {
+  padding-top: 1rem !important;
+}
+
+.scanner-shell #reader__dashboard_section {
+  padding: 0.5rem 0 !important;
+}
+
+.scanner-shell #reader__dashboard_section_csr span,
+.scanner-shell #reader__dashboard_section_swaplink {
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+}
